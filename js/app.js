@@ -1,19 +1,25 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log("DOM fully loaded and parsed");
 
-  var div = $("#selectedCountry");
-  $('.land').click(function() {
+
+  var div = $(".popup-show");
+  $('.popup-close').on('click', function(e)  {
+    e.preventDefault();
+    $('.popup').fadeOut(350);
+  });
+
+  $('.land').click(function(e) {
+    e.preventDefault();
     var country = $(this).attr('title');
     var countryUrl = "https://restcountries.eu/rest/v2/name/" + country;
     $(this).css({fill:'red'})
     $('.land').not($(this)).css({fill:"#CCCCCC"});
-    if (div.children().length > 0) {
-      div.empty();
-    }
+    $('.popup').fadeIn(350);
 
     function insertCountry(country) {
-      var paragraph = $('<p>').text(country.name);
-      div.append(paragraph);
+      $('.one-country').remove();
+      var paragraph = $('<p>', {class: 'one-country'}).text(country.name);
+      div.prepend(paragraph);
     }
 
     function loadDays() {
@@ -35,13 +41,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault();
     var state = $('#country').val();
     var stateUrl = "https://restcountries.eu/rest/v2/name/" + state;
-    if (div.children().length > 0) {
-      div.empty();
-    }
+    $('.popup').fadeIn(350);
 
     function insertCountry(country) {
-      var paragraph = $('<p>').text(country.name);
-      div.append(paragraph);
+      $('.one-country').remove();
+      var paragraph = $('<p>', {class: 'one-country'}).text(country.name);
+      div.prepend(paragraph);
       var country = $("#" + country.alpha2Code).selector;
       $(country).css({fill:'red'})
       $('.land').not($(country)).css({fill:"#CCCCCC"});
@@ -58,5 +63,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     loadDays();
   })
-
 });

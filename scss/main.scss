@@ -1,11 +1,23 @@
-svg {
-  width: 100%;
-  height: 700px;
+form {
+  position: absolute;
+  z-index: 2;
+}
+#map {
   background:aqua;
+  margin: 0 auto;
+  svg {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    viewBox: '0 0 100 100';
+  }
 }
 
 .land	{
-	fill: green;
+	fill: #CCCCCC;
 	fill-opacity: 1;
 	stroke:white;
 	stroke-opacity: 1;
@@ -18,4 +30,52 @@ path:hover {
   stroke-linejoin: round;
   fill: #002868 !important;
   cursor: pointer;
+}
+
+.popup {
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
+}
+
+.popup-show {
+    max-width:700px;
+    width:90%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+
+.popup-close:hover {
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
 }
