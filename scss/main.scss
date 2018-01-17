@@ -1,0 +1,21 @@
+svg {
+  width: 100%;
+  height: 700px;
+  background:aqua;
+}
+
+.land	{
+	fill: green;
+	fill-opacity: 1;
+	stroke:white;
+	stroke-opacity: 1;
+	stroke-width:0.5;
+}
+
+path:hover {
+  stroke: #002868 !important;
+  stroke-width:2px;
+  stroke-linejoin: round;
+  fill: #002868 !important;
+  cursor: pointer;
+}
