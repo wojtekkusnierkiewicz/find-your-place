@@ -4,7 +4,7 @@ form {
 }
 #map {
   background:aqua;
-  margin: 0 auto;
+  // margin: 0 auto;
   svg {
     display: block;
     position: absolute;
@@ -12,7 +12,7 @@ form {
     left: 0;
     width: 100%;
     height: 100%;
-    viewBox: '0 0 100 100';
+    viewBox: '0 0 1200 1000';
   }
 }
 
@@ -53,6 +53,19 @@ path:hover {
     box-shadow:0px 2px 6px rgba(0,0,0,1);
     border-radius:3px;
     background:#fff;
+    display: grid;
+    grid: 1fr / 50% 50%;
+    .one-country {
+      grid-column:1;
+      img {
+        max-width: 30%;
+        height: auto;
+        border: 1px solid black;
+      }
+    }
+    .oneWeather {
+      grid-column: 2;
+    }
 }
 
 .popup-close {
