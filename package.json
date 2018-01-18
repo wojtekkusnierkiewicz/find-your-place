@@ -1,7 +1,7 @@
 {
-  "name": "eat-me",
+  "name": "find-your-place",
   "version": "1.0.0",
-  "description": "eat-me",
+  "description": "find-your-place",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
