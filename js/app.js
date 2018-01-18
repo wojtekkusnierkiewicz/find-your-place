@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log("DOM fully loaded and parsed");
 
-
+  myTimer = '';
   var div = $(".popup-show");
   $('.popup-close').on('click', function(e)  {
     e.preventDefault();
-    $('.popup').fadeOut(350);
+    $('.popup').fadeOut(750);
   });
 
-  $('.land').click(function(e) {
+  $('.land').on('tap click',(function(e) {
     e.preventDefault();
     var country = $(this).attr('title');
     console.log(country);
@@ -18,8 +18,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     console.log(country);
     var countryUrl = "https://restcountries.eu/rest/v2/name/" + country;
     var countryId  = $(this).attr('id');
+    $(this).css({fill:'red'})
     $('.land').not($(this)).css({fill:"#CCCCCC"});
-    $('.popup').fadeIn(350);
+    $('.popup').fadeIn(1500);
+    var image = document.querySelector('#svg');
+    var box = svgPanZoom('#svg');
+    var x = image.querySelector('#'+countryId).getBBox().x;
+    var y = image.querySelector('#'+countryId).getBBox().y;
+    box.zoomAtPointBy(1.3, {x: (x+30), y: y})
+    clearInterval(myTimer)
+    myTimer = setTimeout(function(){ box.resetZoom()}, 3000);
+
+    console.log(x,y);
+
 
     function insertCountry(country) {
       $('.one-country').remove();
@@ -74,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       })
     }
     loadCountry();
-  });
+  }));
 
   $('form').submit(function(event) {
     event.preventDefault();
@@ -84,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault();
     var state = $('#country').val();
     var stateUrl = "https://restcountries.eu/rest/v2/name/" + state;
-    $('.popup').fadeIn(350);
+    $('.popup').fadeIn(1500);
 
     function insertCountry(country) {
 
@@ -104,6 +115,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var selected = country.alpha2Code;
       $('#'+selected).css({fill:'red'})
       $('.land').not($('#'+selected)).css({fill:"#CCCCCC"});
+
+      var image = document.querySelector('#svg');
+      var box = svgPanZoom('#svg');
+      var x = image.querySelector('#'+selected).getBBox().x;
+      var y = image.querySelector('#'+selected).getBBox().y;
+      box.zoomAtPointBy(1.3, {x: (x+30), y: y})
+      clearInterval(myTimer)
+      myTimer = setTimeout(function(){ box.resetZoom()}, 3000);
 
       function insertWeather(city) {
         $('.one-weather').remove();
@@ -148,6 +167,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
   // zooming
   var svgElement = document.querySelector('svg');
-  var panZoomMap = svgPanZoom(svgElement);
-  panZoomMap.fit();
+  svgPanZoom(svgElement, {
+   viewportSelector: '.svg-pan-zoom_viewport',
+   panEnabled: false,
+   controlIconsEnabled: false,
+   zoomEnabled: true,
+   dblClickZoomEnabled: true,
+   mouseWheelZoomEnabled: false,
+   preventMouseEventsDefault: true,
+   zoomScaleSensitivity: 0.1,
+   minZoom: 1,
+   maxZoom: 7,
+   fit: true,
+   contain: true,
+   center: true,
+   refreshRate: 'auto',
+   beforeZoom: function(){},
+   onZoom: function(){},
+   beforePan: function(){},
+   onPan: function(){},
+   onUpdatedCTM: function(){},
+   customEventsHandler: {},
+   eventsListenerElement: null,
+  });
 });
