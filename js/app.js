@@ -188,6 +188,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     customEventsHandler: {},
     eventsListenerElement: null,
   });
+
+  // hovering effect
   $(".land").hover(function(e) {
     $('#about').css('display','block');
     $('#about').html($(this).attr('title'));
