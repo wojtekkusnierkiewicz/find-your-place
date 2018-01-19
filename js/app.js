@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log("DOM fully loaded and parsed");
+  $.mobile.loading().hide();
 
-  myTimer = '';
+  var box = svgPanZoom('svg');
   var div = $(".popup-show");
+  var image = document.querySelector('svg');
   $('.popup-close').on('click', function(e)  {
     e.preventDefault();
     $('.popup').fadeOut(750);
+    box.resetZoom();
   });
 
   $('.land').on('tap click',(function(e) {
@@ -21,16 +24,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $(this).css({fill:'red'})
     $('.land').not($(this)).css({fill:"#CCCCCC"});
     $('.popup').fadeIn(1500);
-    var image = document.querySelector('#svg');
-    var box = svgPanZoom('#svg');
-    var x = image.querySelector('#'+countryId).getBBox().x;
-    var y = image.querySelector('#'+countryId).getBBox().y;
-    box.zoomAtPointBy(1.3, {x: (x+30), y: y})
-    clearInterval(myTimer)
-    myTimer = setTimeout(function(){ box.resetZoom()}, 3000);
-
-    console.log(x,y);
-
+    var size = image.querySelector('#'+countryId).getBBox();
+    box.zoomAtPointBy(1.3, {x: (size.x), y: size.y})
 
     function insertCountry(country) {
       $('.one-country').remove();
@@ -40,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var flag = $('<img>', {src:country.flag});
       name.prepend(flag);
       var region = $('<p>Region: <span>'+country.subregion+'</span></p>')
-      var area = $('<p>Area: <span>'+country.area +' km2</span></p>')
+      var area = $('<p>Area: <span>'+country.area +' km<sup>2</sup></span></p>')
       var nativName = $('<p>Native country name: <span>'+country.nativeName+'</span></p>')
       var population = $('<p>Population: <span>'+(country.population.toLocaleString())+'</span></p>')
       div.append(oneCountry);
@@ -71,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           insertWeather(response)
         }).fail(function(error){
           console.log(error);
+          $('.one-weather').remove();
+          div.append($('<div>', {class:'one-weather'}).text('try another country'))
         })
       }
       loadWeather();
@@ -82,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         insertCountry(response[0]);
       }).fail(function(error) {
         console.log(error);
+        $('.one-country').remove();
+        div.append($('<div>', {class:'one-country'}).text('try another country'))
       })
     }
     loadCountry();
@@ -106,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var flag = $('<img>', {src:country.flag});
       name.prepend(flag);
       var region = $('<p>Region: <span>'+country.subregion+'</span></p>')
-      var area = $('<p>Area: <span>'+country.area +' km2</span></p>')
+      var area = $('<p>Area: <span>'+country.area +' km<sup>2</sup></span></p>')
       var nativName = $('<p>Native country name: <span>'+country.nativeName+'</span></p>')
       var population = $('<p>Population: <span>'+(country.population.toLocaleString())+'</span></p>')
       div.append(oneCountry);
@@ -116,13 +115,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       $('#'+selected).css({fill:'red'})
       $('.land').not($('#'+selected)).css({fill:"#CCCCCC"});
 
-      var image = document.querySelector('#svg');
-      var box = svgPanZoom('#svg');
-      var x = image.querySelector('#'+selected).getBBox().x;
-      var y = image.querySelector('#'+selected).getBBox().y;
-      box.zoomAtPointBy(1.3, {x: (x+30), y: y})
-      clearInterval(myTimer)
-      myTimer = setTimeout(function(){ box.resetZoom()}, 3000);
+      var size = image.querySelector('#'+selected).getBBox();
+      box.zoomAtPointBy(1.3, {x: (size.x), y: size.y})
 
       function insertWeather(city) {
         $('.one-weather').remove();
@@ -149,6 +143,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           insertWeather(response)
         }).fail(function(error){
           console.log(error);
+          $('.one-weather').remove();
+          div.append($('<div>', {class:'one-weather'}).text('try another country'))
         })
       }
       loadWeather();
@@ -160,6 +156,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         insertCountry(response[0]);
       }).fail(function(error) {
         console.log(error);
+        $('.one-country').remove();
+        div.append($('<div>', {class:'one-country'}).text('try another country'))
       })
     }
 
@@ -168,26 +166,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // zooming
   var svgElement = document.querySelector('svg');
   svgPanZoom(svgElement, {
-   viewportSelector: '.svg-pan-zoom_viewport',
-   panEnabled: false,
-   controlIconsEnabled: false,
-   zoomEnabled: true,
-   dblClickZoomEnabled: true,
-   mouseWheelZoomEnabled: false,
-   preventMouseEventsDefault: true,
-   zoomScaleSensitivity: 0.1,
-   minZoom: 1,
-   maxZoom: 7,
-   fit: true,
-   contain: true,
-   center: true,
-   refreshRate: 'auto',
-   beforeZoom: function(){},
-   onZoom: function(){},
-   beforePan: function(){},
-   onPan: function(){},
-   onUpdatedCTM: function(){},
-   customEventsHandler: {},
-   eventsListenerElement: null,
+    viewportSelector: '.svg-pan-zoom_viewport',
+    panEnabled: false,
+    controlIconsEnabled: false,
+    zoomEnabled: true,
+    dblClickZoomEnabled: true,
+    mouseWheelZoomEnabled: false,
+    preventMouseEventsDefault: true,
+    zoomScaleSensitivity: 0.1,
+    minZoom: 1,
+    maxZoom: 15,
+    fit: true,
+    contain: true,
+    center: true,
+    refreshRate: 'auto',
+    beforeZoom: function(){},
+    onZoom: function(){},
+    beforePan: function(){},
+    onPan: function(){},
+    onUpdatedCTM: function(){},
+    customEventsHandler: {},
+    eventsListenerElement: null,
   });
+  $(".land").hover(function(e) {
+    $('#about').css('display','block');
+    $('#about').html($(this).attr('title'));
+    console.log($(this).attr('title'));
+  });
+  $(".land").mouseleave(function(e) {
+    $('#about').css('display','none');
+  });
+  $(document).mousemove(function(e) {
+    $('#about').css('top',e.pageY-$('#about').height()-30);
+    $('#about').css('left',e.pageX-($('#about').width())/2);
+  }).mouseover();
 });
