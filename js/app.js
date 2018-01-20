@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.one-weather, .error').remove();
         var oneWeather = $('<div>', {class: 'one-weather'});
         var capital = $('<h2>Actual conditions in <span>'+city.name+'</span></h2>');
-        var icon = $('<img>', {src: 'http://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
+        var icon = $('<img>', {src: 'https://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
         var description = $('<span>'+city.weather[0].description+'</span>')
         var iconP = $('<p>',{class: 'iconP'}).append(icon,description);
         var claudiness = $('<p>Claudiness: <span>'+city.clouds.all+'%</span></p>')
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         oneWeather.append(capital,iconP,claudiness,temp,pressure, humidity,wind);
       }
 
-      var capitalUrl = "http://api.openweathermap.org/data/2.5/weather?q="+country.capital+","+country.aplha2Code+"&units=metric"+"&APPID=bd5e378503939ddaee76f12ad7a97608";
+      var capitalUrl = "https://api.openweathermap.org/data/2.5/weather?q="+country.capital+","+country.aplha2Code+"&units=metric"+"&APPID=bd5e378503939ddaee76f12ad7a97608";
       function loadWeather() {
         $.ajax({url: capitalUrl}).done(function(response){
           console.log(response);
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.one-weather, .error').remove();
         var oneWeather = $('<div>', {class: 'one-weather'});
         var capital = $('<h2>Actual conditions in <span>'+city.name+'</span></h2>');
-        var icon = $('<img>', {src: 'http://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
+        var icon = $('<img>', {src: 'https://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
         var description = $('<span>'+city.weather[0].description+'</span>')
         var iconP = $('<p>',{class: 'iconP'}).append(icon,description);
         var claudiness = $('<p>Claudiness: <span>'+city.clouds.all+'%</span></p>')
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         oneWeather.append(capital,iconP,claudiness,temp,pressure, humidity,wind);
       }
 
-      var capitalUrl = "http://api.openweathermap.org/data/2.5/weather?q="+country.capital+","+country.aplha2Code+"&units=metric"+"&APPID=bd5e378503939ddaee76f12ad7a97608";
+      var capitalUrl = "https://api.openweathermap.org/data/2.5/weather?q="+country.capital+","+country.aplha2Code+"&units=metric"+"&APPID=bd5e378503939ddaee76f12ad7a97608";
       function loadWeather() {
         $.ajax({url: capitalUrl}).done(function(response){
           console.log(response);
