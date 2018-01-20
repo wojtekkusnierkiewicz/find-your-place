@@ -1,34 +1,33 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log("DOM fully loaded and parsed");
   $.mobile.loading().hide();
+  $(window).resize(function(){location.reload();});
 
-  var box = svgPanZoom('svg');
+
   var div = $(".popup-show");
-  var image = document.querySelector('svg');
-  $('.popup-close').on('click', function(e)  {
-    e.preventDefault();
-    $('.popup').fadeOut(750);
-    box.resetZoom();
-  });
-
   $('.land').on('tap click',(function(e) {
     e.preventDefault();
     var country = $(this).attr('title');
     console.log(country);
-    if (country == 'United States') {
-      country = 'USA';
-    }
+    if (country == 'United States') {country = 'USA'};
+    if (country == 'India') { country='Republic of India'};
     console.log(country);
     var countryUrl = "https://restcountries.eu/rest/v2/name/" + country;
     var countryId  = $(this).attr('id');
     $(this).css({fill:'red'})
     $('.land').not($(this)).css({fill:"#CCCCCC"});
     $('.popup').fadeIn(1500);
-    var size = image.querySelector('#'+countryId).getBBox();
-    box.zoomAtPointBy(1.3, {x: (size.x), y: size.y})
+    var box = svgPanZoom('svg');
+
+    //right zooming out
+    $('.popup-close').on('click', function(e)  {
+      e.preventDefault();
+      $('.popup').fadeOut(750);
+      box.resetZoom();
+    });
 
     function insertCountry(country) {
-      $('.one-country').remove();
+      $('.one-country, .error').remove();
       var oneCountry = $('<div>', {class: 'one-country'});
       var name = $('<h1>').text(country.name);
       var capital = $('<h2>Capital city: <span>'+ country.capital + '</span></h2>')
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       oneCountry.append(name,capital,region,nativName,population,area);
 
       function insertWeather(city) {
-        $('.one-weather').remove();
+        $('.one-weather, .error').remove();
         var oneWeather = $('<div>', {class: 'one-weather'});
         var capital = $('<h2>Actual conditions in <span>'+city.name+'</span></h2>');
         var icon = $('<img>', {src: 'http://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
@@ -66,8 +65,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           insertWeather(response)
         }).fail(function(error){
           console.log(error);
-          $('.one-weather').remove();
-          div.append($('<div>', {class:'one-weather'}).text('try another country'))
+          $('.error, .one-country, .one-weather').remove();
+          div.append($('<div>', {class:'error'}).text('try another country'))
         })
       }
       loadWeather();
@@ -79,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         insertCountry(response[0]);
       }).fail(function(error) {
         console.log(error);
-        $('.one-country').remove();
-        div.append($('<div>', {class:'one-country'}).text('try another country'))
+        $('.error, .one-country, .one-weather').remove();
+        div.append($('<div>', {class:'error'}).text('try another country'))
       })
     }
     loadCountry();
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function insertCountry(country) {
 
-      $('.one-country').remove();
+      $('.one-country, .error').remove();
       var oneCountry = $('<div>', {class: 'one-country'});
       var name = $('<h1>').text(country.name);
       var capital = $('<h2>Capital city: <span>'+ country.capital + '</span></h2>')
@@ -115,11 +114,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       $('#'+selected).css({fill:'red'})
       $('.land').not($('#'+selected)).css({fill:"#CCCCCC"});
 
-      var size = image.querySelector('#'+selected).getBBox();
-      box.zoomAtPointBy(1.3, {x: (size.x), y: size.y})
+      var box = svgPanZoom('svg'); // selecting it here prevent SVG from resizing below init value
+
+      $('.popup-close').on('click', function(e)  {
+        e.preventDefault();
+        $('.popup').fadeOut(750);
+        box.resetZoom();
+      });
 
       function insertWeather(city) {
-        $('.one-weather').remove();
+        $('.one-weather, .error').remove();
         var oneWeather = $('<div>', {class: 'one-weather'});
         var capital = $('<h2>Actual conditions in <span>'+city.name+'</span></h2>');
         var icon = $('<img>', {src: 'http://openweathermap.org/img/w/'+city.weather[0].icon+'.png'});
@@ -143,8 +147,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           insertWeather(response)
         }).fail(function(error){
           console.log(error);
-          $('.one-weather').remove();
-          div.append($('<div>', {class:'one-weather'}).text('try another country'))
+          $('.error, .one-country, .one-weather').remove();
+          div.append($('<div>', {class:'error'}).text('try another country'))
         })
       }
       loadWeather();
@@ -156,8 +160,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         insertCountry(response[0]);
       }).fail(function(error) {
         console.log(error);
-        $('.one-country').remove();
-        div.append($('<div>', {class:'one-country'}).text('try another country'))
+        $('.error, .one-country, .one-weather').remove();
+        div.append($('<div>', {class:'error'}).text('try another country'))
       })
     }
 
@@ -167,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var svgElement = document.querySelector('svg');
   svgPanZoom(svgElement, {
     viewportSelector: '.svg-pan-zoom_viewport',
-    panEnabled: false,
+    panEnabled: true,
     controlIconsEnabled: false,
     zoomEnabled: true,
     dblClickZoomEnabled: true,
@@ -202,4 +206,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('#about').css('top',e.pageY-$('#about').height()-30);
     $('#about').css('left',e.pageX-($('#about').width())/2);
   }).mouseover();
+
+  $('.home').click(function(){
+    var box = svgPanZoom('svg');
+    box.resetZoom();
+  })
 });
